@@ -1,5 +1,5 @@
 const express = require('express');
-const {startDate,endDate}  = require('./utils/dates.js');
+const {getDateNDaysAgo}  = require('./utils/dates.js');
 const OpenAI = require('openai');
 require('dotenv').config();
 
@@ -13,17 +13,22 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.post('/fetch-stock-data', async (req, res) => {
-  const tickersArr = req.body.tickers;
-  const apiKey = process.env.POLYGON_API_KEY;
-  const url = `https://api.polygon.io/v2/aggs/ticker/${tickersArr.join(',')}/range/1/day/${startDate}/${endDate}?apiKey=${apiKey}`;
+app.get('/stock', async (req, res) => {
+  // const tickersArr = req.body.tickers;
+  const apiKey = process.env.apiKey;
+  const startDate=getDateNDaysAgo(3);
+  console.log(startDate);
+  const endDate=getDateNDaysAgo(1);
+  console.log(endDate);
+  const ticker= "NVDA";
+  const url = `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/day/${startDate}/${endDate}?adjusted=true&sort=asc&apiKey=${apiKey}`;
 
   try {
     const response = await fetch(url);
-    const data = await response.text();
+    const data = await response.json();
     res.json({ data });
   } catch (err) {
-    res.status(500).json({ error: 'Error fetching stock data' });
+    res.status(500).json({ error: 'Error fetching stock data', mes: err });
   }
 });
 
@@ -49,7 +54,7 @@ app.post('/generate-report', async (req, res) => {
 
   try {
     const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
+      apiKey: process.env.OapiKey,
       dangerouslyAllowBrowser: true
     });
     const response = await openai.chat.completions.create({
