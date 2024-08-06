@@ -15,11 +15,11 @@ app.get('/', (req, res) => {
 
 app.get('/stock', async (req, res) => {
   // const tickersArr = req.body.tickers;
-  const apiKey = process.env.apiKey;
+  const apiKey = process.env.polygon;
   const startDate=getDateNDaysAgo(3);
-  console.log(startDate);
+
   const endDate=getDateNDaysAgo(1);
-  console.log(endDate);
+  
   const ticker= "NVDA";
   const url = `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/day/${startDate}/${endDate}?adjusted=true&sort=asc&apiKey=${apiKey}`;
 
@@ -54,7 +54,7 @@ app.post('/generate-report', async (req, res) => {
 
   try {
     const openai = new OpenAI({
-      apiKey: process.env.OapiKey,
+      apiKey: process.env.open,
       dangerouslyAllowBrowser: true
     });
     const response = await openai.chat.completions.create({
@@ -68,5 +68,5 @@ app.post('/generate-report', async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}/`);
+  console.log(`Server running at http://localhost:${port}`);
 });
