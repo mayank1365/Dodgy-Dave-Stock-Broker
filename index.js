@@ -1,5 +1,5 @@
 const express = require('express');
-const { dates } = require('./utils/dates.js');
+const {startDate,endDate}  = require('./utils/dates.js');
 const OpenAI = require('openai');
 require('dotenv').config();
 
