@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 app.post('/fetch-stock-data', async (req, res) => {
   const tickersArr = req.body.tickers;
   const apiKey = process.env.POLYGON_API_KEY;
-  const url = `https://api.polygon.io/v2/aggs/ticker/${tickersArr.join(',')}/range/1/day/${dates.startDate}/${dates.endDate}?apiKey=${apiKey}`;
+  const url = `https://api.polygon.io/v2/aggs/ticker/${tickersArr.join(',')}/range/1/day/${startDate}/${endDate}?apiKey=${apiKey}`;
 
   try {
     const response = await fetch(url);
