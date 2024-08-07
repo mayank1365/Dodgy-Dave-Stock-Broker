@@ -9,10 +9,6 @@ const port = 3000;
 app.use(express.json());
 app.use(express.static('public'));
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
 app.get('/stock', async (req, res) => {
   // const tickersArr = req.body.tickers;
   const apiKey = process.env.polygon;
